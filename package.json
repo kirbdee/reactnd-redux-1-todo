@@ -1,0 +1,7 @@
+{
+  "name": "reactnd-redux-1-todo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kirby Domingo <kirby.domingo@gmail.com>",
+  "license": "MIT"
+}
