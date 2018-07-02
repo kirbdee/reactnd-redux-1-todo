@@ -25,16 +25,54 @@ const createStore = (reducer) => {
         dispatch
     }
 }
+//actions
+const ADD_TODO = 'ADD_TODO';
+const REMOVE_TODO = 'REMOVE_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+const ADD_GOAL = 'ADD_GOAL';
+const REMOVE_GOAL = 'REMOVE_GOAL';
+const TOGGLE_GOAL = 'TOGGLE_GOAL';
+
+//actioncreator
+const addTodo = (todo) => ({
+    type: ADD_TODO,
+    todo
+});
+
+const removeTodo = (id) => ({
+    type: REMOVE_TODO,
+    id
+});
+
+const toggleTodo = (id) => ({
+    type: TOGGLE_TODO,
+    id
+});
+
+const addGoal = (goal) => ({
+    type: ADD_GOAL,
+    goal
+});
+
+const removeGoal = (id) => ({
+    type: REMOVE_GOAL,
+    id
+});
+
+const toggleGoal = (id) => ({
+    type: TOGGLE_GOAL,
+    id
+});
 
 //reducer
 const todos = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_TODO':
+        case ADD_TODO:
             return state.concat([action.todo]);
-        case 'REMOVE_TODO':
-            return state.filter((todo) => todo.id !== action.todo.id);
-        case 'TOGGLE_TODO':
-            return state.map((todo) => todo.id === action.todo.id ? Object.assign({},todo,{complete: !todo.complete}) : todo)
+        case REMOVE_TODO:
+            return state.filter((todo) => todo.id !== action.id);
+        case TOGGLE_TODO:
+            return state.map((todo) => todo.id === action.id ? Object.assign({},todo,{complete: !todo.complete}) : todo)
         default:
             return state;
     }
@@ -42,12 +80,12 @@ const todos = (state = [], action) => {
 
 const goals = (state = [], action) => {
     switch (action.type) {
-        case 'ADD_GOAL':
+        case ADD_GOAL:
             return state.concat([action.goal]);
-        case 'REMOVE_GOAL':
-            return state.filter((goal) => goal.id !== action.goal.id);
-        case 'TOGGLE_GOAL':
-            return state.map((goal) => goal.id === action.goal.id ? Object.assign({},goal,{complete: !goal.complete}) : goal)
+        case REMOVE_GOAL:
+            return state.filter((goal) => goal.id !== action.id);
+        case TOGGLE_GOAL:
+            return state.map((goal) => goal.id === action.id ? Object.assign({},goal,{complete: !goal.complete}) : goal)
         default:
             return state;
     }
@@ -61,32 +99,20 @@ const combinedReducer = (state = {}, action) => {
 };
 
 //app
-const appState = createStore(combinedReducer);
-appState.subscribe(() => console.log(appState.getState()))
-appState.dispatch({
-    type: 'ADD_TODO',
-    todo: {
-        id: 0,
-        text: "get something",
-        complete: true
-    }
-});
-appState.dispatch({
-    type: 'TOGGLE_TODO',
-    todo: {
-        id: 0
-    }
-});
-appState.dispatch({
-    type: 'ADD_GOAL',
-    goal: {
-        id: 1,
-        text: "goal of something"
-    }
-});
-appState.dispatch({
-    type: 'REMOVE_TODO',
-    todo: {
-        id: 0
-    }
-});
+const store = createStore(combinedReducer);
+store.subscribe(() => console.log(store.getState()))
+
+store.dispatch(addTodo({
+    id: 0,
+    text: "get something",
+    complete: true
+}));
+
+store.dispatch(toggleTodo(0));
+
+store.dispatch(addGoal({
+    id: 1,
+    text: "goal of something"
+}));
+
+store.dispatch(removeTodo(0));
